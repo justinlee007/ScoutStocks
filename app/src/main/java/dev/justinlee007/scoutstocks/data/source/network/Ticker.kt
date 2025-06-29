@@ -10,46 +10,30 @@ import kotlinx.serialization.Serializable
 data class Ticker(
     @SerialName("ticker")
     val ticker: String,
-
     @SerialName("name")
     val name: String,
-
     @SerialName("market")
     val market: String,
-
     @SerialName("locale")
     val locale: String,
-
     @SerialName("active")
     val active: Boolean,
-
     @SerialName("currency_name")
     val currencyName: String? = null, // Can be null for some markets
-
-    // Add other fields you might get from the API for a ticker, for example:
     @SerialName("cik")
     val cik: String? = null,
-
     @SerialName("composite_figi")
     val compositeFigi: String? = null,
-
     @SerialName("share_class_figi")
     val shareClassFigi: String? = null,
-
     @SerialName("last_updated")
     val lastUpdated: String? = null, // This might be a timestamp, consider using Instant/Long
-
     @SerialName("primary_exchange")
     val primaryExchange: String? = null,
-
     @SerialName("type")
     val type: String? = null,
-
-    // Branding information (often nested)
     @SerialName("branding")
     val branding: Branding? = null,
-
-    // Description, homepage, etc. (often part of the Ticker Overview response)
     @SerialName("description")
     val description: String? = null,
     @SerialName("homepage_url")
@@ -67,5 +51,5 @@ data class Ticker(
     @SerialName("phone_number")
     val phoneNumber: String? = null,
     @SerialName("address")
-    val address: Address? = null, // Nested address object
+    val address: Address? = null,
 )
