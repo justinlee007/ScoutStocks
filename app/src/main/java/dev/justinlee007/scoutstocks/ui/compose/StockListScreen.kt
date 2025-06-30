@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -142,6 +143,23 @@ fun SuccessListScreen(
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Name",
+                    modifier = Modifier.weight(0.75f),
+                )
+                Text(
+                    text = "Ticker",
+                    modifier = Modifier.weight(0.25f),
+                )
+            }
+        }
         items(
             items = stockItems,
             key = { it.ticker }
