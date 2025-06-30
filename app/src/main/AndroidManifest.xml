@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScoutStocks">
         <activity
-            android:name=".ui.view.ScoutStocksActivity"
+            android:name=".ScoutStocksActivity"
             android:exported="true"
             android:theme="@style/Theme.ScoutStocks">
             <intent-filter>

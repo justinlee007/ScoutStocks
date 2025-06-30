@@ -1,4 +1,4 @@
-package dev.justinlee007.scoutstocks.ui.view
+package dev.justinlee007.scoutstocks
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
