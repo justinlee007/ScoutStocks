@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -182,6 +183,34 @@ fun SuccessScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Name",
+                        modifier = Modifier.weight(0.4f),
+                    )
+                    Text(
+                        text = "Price",
+                        modifier = Modifier.weight(0.2f),
+                        textAlign = TextAlign.Center,
+                    )
+                    Text(
+                        text = "Diff ($)",
+                        modifier = Modifier.weight(0.2f),
+                        textAlign = TextAlign.End,
+                    )
+                    Text(
+                        text = "Diff (%)",
+                        modifier = Modifier.weight(0.2f),
+                        textAlign = TextAlign.End,
+                    )
+                }
+            }
             items(
                 items = stockItems,
                 key = { it.ticker }
@@ -194,19 +223,23 @@ fun SuccessScreen(
                 ) {
                     Text(
                         text = "${stockItem.name} (${stockItem.ticker})",
-                        modifier = Modifier.weight(0.4f)
+                        modifier = Modifier.weight(0.4f),
+                        maxLines = 2,
                     )
                     Text(
-                        text = String.format("%.2f", stockItem.price),
-                        modifier = Modifier.weight(0.2f)
+                        text = "$${String.format("%.2f", stockItem.price)}",
+                        modifier = Modifier.weight(0.2f),
+                        textAlign = TextAlign.End,
                     )
                     Text(
                         text = String.format("%.2f", stockItem.change),
-                        modifier = Modifier.weight(0.2f)
+                        modifier = Modifier.weight(0.2f),
+                        textAlign = TextAlign.End,
                     )
                     Text(
                         text = "${String.format("%.2f", stockItem.changePercent)}%",
-                        modifier = Modifier.weight(0.2f)
+                        modifier = Modifier.weight(0.2f),
+                        textAlign = TextAlign.End,
                     )
                 }
             }
