@@ -2,7 +2,7 @@ package dev.justinlee007.scoutstocks.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.justinlee007.scoutstocks.data.repository.StockRepository
+import dev.justinlee007.scoutstocks.data.repository.RemoteRepository
 import dev.justinlee007.scoutstocks.domain.model.OverviewUiState
 import dev.justinlee007.scoutstocks.domain.model.StockItem
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
-    private val stockRepository: StockRepository
+    private val remoteRepository: RemoteRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading)
@@ -24,7 +24,7 @@ class OverviewViewModel @Inject constructor(
 
     suspend fun refreshUiState() {
         withContext(Dispatchers.IO) {
-            stockRepository.getTickerList(limit = 10).map { result ->
+            remoteRepository.getTickerList(limit = 10).map { result ->
                 if (result.isSuccess) {
                     val items = result.getOrNull()?.results?.map { ticker ->
                         StockItem(

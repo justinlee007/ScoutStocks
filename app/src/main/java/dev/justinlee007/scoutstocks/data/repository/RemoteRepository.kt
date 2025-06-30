@@ -15,7 +15,7 @@ import javax.inject.Singleton
  * It abstracts the data source (PolygonApiService) from the rest of the application.
  */
 @Singleton
-class StockRepository @Inject constructor(
+class RemoteRepository @Inject constructor(
     private val apiService: PolygonApiService
 ) {
 
