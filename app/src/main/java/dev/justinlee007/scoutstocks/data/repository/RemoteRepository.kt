@@ -6,8 +6,6 @@ import dev.justinlee007.scoutstocks.data.remote.Ticker
 import dev.justinlee007.scoutstocks.data.remote.TickerList
 import dev.justinlee007.scoutstocks.data.remote.TickerOverview
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,7 +36,7 @@ class RemoteRepository @Inject constructor(
         limit: Int? = null,
         sort: String? = null,
         order: String? = null
-    ): Flow<Result<TickerList>> {
+    ): Result<TickerList> {
         delay(2000)
         val response = apiService.getTickerList(
             market = market,
@@ -48,7 +46,7 @@ class RemoteRepository @Inject constructor(
             sort = sort,
             order = order
         )
-        val result = if (response.isSuccessful) {
+        return if (response.isSuccessful) {
             val tickerList = response.body()
             if (tickerList != null) {
                 Result.success(tickerList)
@@ -58,7 +56,6 @@ class RemoteRepository @Inject constructor(
         } else {
             Result.failure(Exception("API request failed with code ${response.code()}"))
         }
-        return flowOf(result)
     }
 
     /**

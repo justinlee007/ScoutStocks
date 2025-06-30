@@ -41,15 +41,6 @@ class StockListViewModel @Inject constructor(
         }
     }
 
-    suspend fun addStockItem(stockItem: StockItem) {
-        localRepository.upsertTicker(
-            ticker = LocalTicker(
-                name = stockItem.name,
-                ticker = stockItem.ticker,
-            )
-        )
-    }
-
     suspend fun deleteStockItem(stockItem: StockItem) {
         localRepository.deleteTickerBySymbol(stockItem.ticker)
     }
