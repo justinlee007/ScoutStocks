@@ -1,4 +1,4 @@
-# Scout Stock App
+# [Scout Stock App](https://github.com/justinlee007/ScoutStocks)
 
 ## Screen Recording
 
