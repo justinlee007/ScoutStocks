@@ -16,6 +16,8 @@
 
 package dev.justinlee007.scoutstocks
 
+import androidx.navigation.NavHostController
+
 /**
  * Contract for information needed on every Scout Stock navigation destination
  */
@@ -41,3 +43,18 @@ object StockList : ScoutStocksDestination {
 object AddStock : ScoutStocksDestination {
     override val route = "add_stock"
 }
+
+/**
+ * Models the navigation actions in the app.
+ */
+class ScoutStocksNavigationActions(private val navController: NavHostController) {
+
+    fun navigateToStockList() {
+        navController.navigate(route = StockList.route)
+    }
+
+    fun navigateToStockDetail(ticker: String) {
+        navController.navigate(route = "${StockDetail.route}/$ticker")
+    }
+}
+

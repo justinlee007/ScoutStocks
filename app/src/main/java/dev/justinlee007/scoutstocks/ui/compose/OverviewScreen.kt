@@ -55,7 +55,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OverviewScreen(
-    modifier: Modifier = Modifier,
+    onClickStockDetail: (String) -> Unit = {},
+    onClickStockList: () -> Unit = {},
     overviewViewModel: OverviewViewModel = hiltViewModel(),
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
@@ -67,7 +68,7 @@ fun OverviewScreen(
             TopAppBar(
                 title = { Text("Overview") },
                 actions = {
-                    IconButton(onClick = { /* TODO: Handle list icon click */ }) {
+                    IconButton(onClick = onClickStockList) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.List,
                             contentDescription = "List of Stocks"
@@ -77,7 +78,6 @@ fun OverviewScreen(
                 colors = TopAppBarDefaults.topAppBarColors()
             )
         },
-        modifier = modifier
     ) { innerPadding ->
         Column(
             modifier = Modifier

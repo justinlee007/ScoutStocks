@@ -12,7 +12,10 @@ import dev.justinlee007.scoutstocks.ui.theme.ScoutStocksTheme
  * and market cap, using basic graphical representations and standard UI elements.
  */
 @Composable
-fun StockDetailScreen(modifier: Modifier = Modifier) {
+fun StockDetailScreen(
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit = {},
+) {
     Text(
         text = "Stock Detail Screen",
         modifier = modifier

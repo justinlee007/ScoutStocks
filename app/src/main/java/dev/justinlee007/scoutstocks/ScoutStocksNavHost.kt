@@ -1,6 +1,7 @@
 package dev.justinlee007.scoutstocks
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,6 +16,9 @@ import dev.justinlee007.scoutstocks.ui.compose.StockListScreen
 fun ScoutStocksNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    navActions: ScoutStocksNavigationActions = remember(navController) {
+        ScoutStocksNavigationActions(navController)
+    }
 ) {
     NavHost(
         navController = navController,
@@ -23,26 +27,27 @@ fun ScoutStocksNavHost(
     ) {
         composable(route = Overview.route) {
             OverviewScreen(
-//                onClickSeeAllAccounts = {
-//                    navController.navigateSingleTopTo(Accounts.route)
-//                },
-//                onClickSeeAllBills = {
-//                    navController.navigateSingleTopTo(Bills.route)
-//                },
-//                onAccountClick = { accountType ->
-//                    navController.navigateToSingleAccount(accountType)
-//                }
+                onClickStockDetail = { ticker ->
+                    navActions.navigateToStockDetail(ticker)
+                },
+                onClickStockList = {
+                    navActions.navigateToStockList()
+                }
             )
         }
         composable(route = StockDetail.route) {
             StockDetailScreen(
-//                onAccountClick = { accountType ->
-//                    navController.navigateToSingleAccount(accountType)
-//                }
+                onBack = {
+                    navController.popBackStack()
+                }
             )
         }
         composable(route = StockList.route) {
-            StockListScreen()
+            StockListScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
         composable(route = AddStock.route) {
             AddStockScreen()
