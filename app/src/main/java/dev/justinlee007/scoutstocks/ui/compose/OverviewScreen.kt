@@ -1,5 +1,6 @@
 package dev.justinlee007.scoutstocks.ui.compose
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -103,6 +104,7 @@ fun OverviewScreen(
                 is OverviewUiState.Success -> SuccessScreen(
                     stockItems = uiState.items,
                     isRefreshing = isRefreshing,
+                    onClickStockDetail = { ticker -> onClickStockDetail(ticker) },
                     onRefresh = { onRefresh() },
                 )
             }
@@ -170,8 +172,9 @@ fun EmptyScreen(
 fun SuccessScreen(
     stockItems: List<StockItem>,
     isRefreshing: Boolean,
-    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
+    onClickStockDetail: (String) -> Unit = {},
+    onRefresh: () -> Unit = {},
 ) {
     val state = rememberPullToRefreshState()
     PullToRefreshBox(
@@ -218,8 +221,11 @@ fun SuccessScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(16.dp)
+                        .clickable(
+                            onClick = { onClickStockDetail(stockItem.ticker) }
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "${stockItem.name} (${stockItem.ticker})",
@@ -272,6 +278,5 @@ fun PreviewSuccessScreen() {
             StockItem(name = "Microsoft Corp.", ticker = "MSFT")
         ),
         isRefreshing = false,
-        onRefresh = { /* Handle refresh action */ },
     )
 }

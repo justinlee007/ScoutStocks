@@ -16,7 +16,10 @@ import dev.justinlee007.scoutstocks.ui.theme.ScoutStocksTheme
  * search query, ensuring efficient API use.
  */
 @Composable
-fun AddStockScreen(modifier: Modifier = Modifier) {
+fun AddStockScreen(
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit = {},
+) {
     Text(
         text = "Add Stocks Screen",
         modifier = modifier

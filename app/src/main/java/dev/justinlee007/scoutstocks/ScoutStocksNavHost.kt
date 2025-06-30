@@ -35,7 +35,10 @@ fun ScoutStocksNavHost(
                 }
             )
         }
-        composable(route = StockDetail.route) {
+        composable(
+            route = StockDetail.routeWithArgs,
+            arguments = StockDetail.arguments,
+        ) {
             StockDetailScreen(
                 onBack = {
                     navController.popBackStack()
@@ -50,7 +53,11 @@ fun ScoutStocksNavHost(
             )
         }
         composable(route = AddStock.route) {
-            AddStockScreen()
+            AddStockScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

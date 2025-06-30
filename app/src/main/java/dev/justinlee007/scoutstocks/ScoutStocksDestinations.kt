@@ -17,6 +17,8 @@
 package dev.justinlee007.scoutstocks
 
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 /**
  * Contract for information needed on every Scout Stock navigation destination
@@ -34,6 +36,13 @@ object Overview : ScoutStocksDestination {
 
 object StockDetail : ScoutStocksDestination {
     override val route = "stock_detail"
+    const val tickerArg = "ticker"
+
+    val routeWithArgs = "${route}/{${tickerArg}}"
+
+    val arguments = listOf(
+        navArgument(tickerArg) { type = NavType.StringType }
+    )
 }
 
 object StockList : ScoutStocksDestination {
