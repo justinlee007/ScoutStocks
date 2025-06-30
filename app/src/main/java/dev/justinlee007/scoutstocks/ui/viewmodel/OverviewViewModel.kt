@@ -2,16 +2,39 @@ package dev.justinlee007.scoutstocks.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.justinlee007.scoutstocks.data.model.TickerList
 import dev.justinlee007.scoutstocks.data.repository.StockRepository
-import kotlinx.coroutines.flow.Flow
+import dev.justinlee007.scoutstocks.domain.model.OverviewUiState
+import dev.justinlee007.scoutstocks.domain.model.StockItem
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val stockRepository: StockRepository
 ) : ViewModel() {
-    suspend fun fetchTickerList(): Flow<Result<TickerList>> {
-        return stockRepository.getTickerList(limit = 10)
+
+    private val _uiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading)
+
+    suspend fun initializeUiState() {
+        stockRepository.getTickerList(limit = 10).map { result ->
+            if (result.isSuccess) {
+                val items = result.getOrNull()?.results?.map { ticker ->
+                    StockItem(
+                        name = ticker.name,
+                        ticker = ticker.ticker,
+                    )
+                }.orEmpty()
+                OverviewUiState.Success(items = items)
+            } else {
+                OverviewUiState.Error(message = result.exceptionOrNull()?.message.orEmpty())
+            }
+        }.collect { state ->
+            _uiState.emit(state)
+        }
     }
+
+    val uiState: StateFlow<OverviewUiState> = _uiState.asStateFlow()
 }
