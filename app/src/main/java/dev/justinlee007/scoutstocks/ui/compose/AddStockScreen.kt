@@ -60,10 +60,13 @@ fun AddStockScreen(
     // Debounce query changes
     LaunchedEffect(Unit) {
         snapshotFlow { query }
-            .debounce(timeoutMillis = 500)
+            .debounce(timeoutMillis = 1000)
             .distinctUntilChanged()
             .collectLatest { debouncedQuery ->
-                addStockViewModel.searchStock(query)
+                if (debouncedQuery.isNotEmpty()) {
+                    Timber.d("Searching for stock: $debouncedQuery")
+                    addStockViewModel.searchStock(debouncedQuery)
+                }
             }
     }
 
