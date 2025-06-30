@@ -1,6 +1,7 @@
 package dev.justinlee007.scoutstocks.data.repository
 
 import dev.justinlee007.scoutstocks.data.remote.PolygonApiService
+import dev.justinlee007.scoutstocks.data.remote.PreviousDayBar
 import dev.justinlee007.scoutstocks.data.remote.Ticker
 import dev.justinlee007.scoutstocks.data.remote.TickerList
 import dev.justinlee007.scoutstocks.data.remote.TickerOverview
@@ -58,6 +59,33 @@ class RemoteRepository @Inject constructor(
             Result.failure(Exception("API request failed with code ${response.code()}"))
         }
         return flowOf(result)
+    }
+
+    /**
+     * Fetches the previous trading day's bar data (OHLCV) for a specific ticker.
+     *
+     * @param stocksTicker The ticker symbol (e.g., "AAPL").
+     * @param adjusted Whether or not the results are adjusted for splits.
+     * @return A [PreviousDayBar] object. The actual bar data will be in `response.results?.firstOrNull()`.
+     */
+    suspend fun getPreviousDayBar(
+        stocksTicker: String,
+        adjusted: Boolean = true
+    ): Result<PreviousDayBar> {
+        val response = apiService.getPreviousDayBar(
+            stocksTicker = stocksTicker,
+            adjusted = adjusted
+        )
+        return if (response.isSuccessful) {
+            val previousDayBar = response.body()
+            if (previousDayBar != null) {
+                Result.success(previousDayBar)
+            } else {
+                Result.failure(Exception("Empty response body"))
+            }
+        } else {
+            Result.failure(Exception("API request failed with code ${response.code()}"))
+        }
     }
 
     /**

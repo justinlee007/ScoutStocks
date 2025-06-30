@@ -15,7 +15,7 @@ interface PolygonApiService {
      * Corresponds to: GET /v3/reference/tickers
      *
      * @param market Filter by market type (e.g., "stocks", "crypto"). Defaults to "stocks".
-     * @param active Filter by actively traded assets (true/false).
+     * @param active Filter by actively traded assets.
      * @param search Search for terms within the ticker and/or company name.
      * @param limit Limit the number of results returned (default 100, max 1000).
      * @param sort Sort field used for ordering (e.g., "ticker", "name").
@@ -31,6 +31,21 @@ interface PolygonApiService {
         @Query("sort") sort: String? = null,
         @Query("order") order: String? = null,
     ): Response<TickerList>
+
+    /**
+     * Retrieves the previous trading day's open, high, low, and close (OHLC) data
+     * for a specified stock ticker.
+     * Corresponds to: GET /v2/aggs/ticker/{stocksTicker}/prev
+     *
+     * @param stocksTicker The ticker symbol of the asset (e.g., "AAPL").
+     * @param adjusted Whether or not the results are adjusted for splits (true/false).
+     * @return A [PreviousDayBar] object containing the previous day's bar data.
+     */
+    @GET("v2/aggs/ticker/{stocksTicker}/prev")
+    suspend fun getPreviousDayBar(
+        @Path("stocksTicker") stocksTicker: String,
+        @Query("adjusted") adjusted: Boolean = true
+    ): Response<PreviousDayBar>
 
     /**
      * Fetches detailed information for a single ticker.
