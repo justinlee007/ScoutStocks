@@ -10,8 +10,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +29,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.justinlee007.scoutstocks.domain.model.OverviewUiState
 import dev.justinlee007.scoutstocks.domain.model.StockItem
-import dev.justinlee007.scoutstocks.ui.theme.ScoutStocksTheme
 import dev.justinlee007.scoutstocks.ui.viewmodel.OverviewViewModel
 
 /**
@@ -36,16 +43,41 @@ import dev.justinlee007.scoutstocks.ui.viewmodel.OverviewViewModel
  * * Fetch new data every time the app starts, displaying this information in a no-frills,
  * accessible manner.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OverviewScreen(
     modifier: Modifier = Modifier,
     overviewViewModel: OverviewViewModel = hiltViewModel(),
 ) {
     val uiState = overviewViewModel.uiState.collectAsStateWithLifecycle().value
-    when (uiState) {
-        is OverviewUiState.Loading -> LoadingScreen()
-        is OverviewUiState.Error -> ErrorScreen(errorMessage = uiState.message)
-        is OverviewUiState.Success -> SuccessScreen(stockItems = uiState.items)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Overview") },
+                actions = {
+                    IconButton(onClick = { /* TODO: Handle list icon click */ }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.List,
+                            contentDescription = "List of Stocks"
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors()
+            )
+        },
+        modifier = modifier
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            when (uiState) {
+                is OverviewUiState.Loading -> LoadingScreen()
+                is OverviewUiState.Error -> ErrorScreen(errorMessage = uiState.message)
+                is OverviewUiState.Success -> SuccessScreen(stockItems = uiState.items)
+            }
+        }
     }
 }
 
@@ -118,11 +150,26 @@ fun SuccessScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Loading State")
 @Composable
-fun OverviewScreenPreview() {
-    ScoutStocksTheme {
-        LoadingScreen()
-        ErrorScreen(errorMessage = "Failed to load stocks")
-    }
+fun PreviewLoadingScreen() {
+    LoadingScreen()
+}
+
+@Preview(showBackground = true, name = "Error State")
+@Composable
+fun PreviewErrorScreen() {
+    ErrorScreen(errorMessage = "Failed to load stocks.")
+}
+
+@Preview(showBackground = true, name = "Success State")
+@Composable
+fun PreviewSuccessScreen() {
+    SuccessScreen(
+        stockItems = listOf(
+            StockItem(name = "Apple Inc.", ticker = "AAPL"),
+            StockItem(name = "Alphabet Inc.", ticker = "GOOGL"),
+            StockItem(name = "Microsoft Corp.", ticker = "MSFT")
+        )
+    )
 }

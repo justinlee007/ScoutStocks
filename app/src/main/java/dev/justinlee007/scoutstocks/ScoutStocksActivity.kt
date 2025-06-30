@@ -5,10 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -30,18 +26,14 @@ class ScoutStocksActivity : ComponentActivity() {
         lifecycleScope.launch {
             Timber.d("Making API call")
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                overviewViewModel.initializeUiState()
+                overviewViewModel.refreshUiState()
             }
         }
 
         enableEdgeToEdge()
         setContent {
             ScoutStocksTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    OverviewScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                OverviewScreen()
             }
         }
     }

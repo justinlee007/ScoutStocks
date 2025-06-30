@@ -18,7 +18,9 @@ class OverviewViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading)
 
-    suspend fun initializeUiState() {
+    val uiState: StateFlow<OverviewUiState> = _uiState.asStateFlow()
+
+    suspend fun refreshUiState() {
         stockRepository.getTickerList(limit = 10).map { result ->
             if (result.isSuccess) {
                 val items = result.getOrNull()?.results?.map { ticker ->
@@ -35,6 +37,4 @@ class OverviewViewModel @Inject constructor(
             _uiState.emit(state)
         }
     }
-
-    val uiState: StateFlow<OverviewUiState> = _uiState.asStateFlow()
 }

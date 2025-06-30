@@ -4,6 +4,7 @@ import dev.justinlee007.scoutstocks.data.model.Ticker
 import dev.justinlee007.scoutstocks.data.model.TickerList
 import dev.justinlee007.scoutstocks.data.model.TickerOverview
 import dev.justinlee007.scoutstocks.data.remote.PolygonApiService
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -37,6 +38,7 @@ class StockRepository @Inject constructor(
         sort: String? = null,
         order: String? = null
     ): Flow<Result<TickerList>> {
+        delay(3000)
         val response = apiService.getTickerList(
             market = market,
             active = active,
