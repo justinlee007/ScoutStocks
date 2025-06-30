@@ -25,7 +25,7 @@ interface PolygonApiService {
      * @return A [TickerList] object containing a list of [Ticker] objects.
      */
     @GET("v3/reference/tickers")
-    suspend fun getTickers(
+    suspend fun getTickerList(
         @Query("market") market: String = "stocks",
         @Query("active") active: Boolean = true,
         @Query("search") search: String? = null,
@@ -42,7 +42,7 @@ interface PolygonApiService {
      * @return A [TickerOverview] object which should contain a single [Ticker] in its results list.
      */
     @GET("v3/reference/tickers/{ticker}")
-    suspend fun getTickerDetails(
+    suspend fun getTickerOverview(
         @Path("ticker") ticker: String,
         @Query("apiKey") apiKey: String
     ): TickerOverview
