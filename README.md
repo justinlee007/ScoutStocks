@@ -1,6 +1,6 @@
 # Scout Stock App
 
-## Screenshots
+## Screen Recording
 
 <img src="ScoutStocks.gif" alt="Screenshot">
 
@@ -18,22 +18,39 @@ list of stocks, and an add stock functionality.
 The app is structured to allow users to easily navigate between different screens, view stock
 details, and manage their stock list with minimal complexity.
 
-## Features
+## Tech Stack
 
-* **Stocks Overview Screen**: Displays a list of stocks with current prices and daily changes,
-  allowing users to tap on a stock for detailed information.
-* **Detailed Stock Information Screen**: Provides in-depth details about a specific stock, including
-  historical data charts, volume, and market cap.
-* **List of Stocks Screen**: Shows a list of stocks with names and symbols, allowing users to add or
-  remove stocks easily.
-* **Add Stock Screen**: Allows users to search for stocks using an autocomplete feature, making it
-  easy to find and add stocks to their list.
-* **Pull-to-Refresh**: Users can refresh stock data by pulling down on the stocks overview screen,
-  ensuring they always have the latest information.
-* **Swipe-to-Delete**: Users can remove stocks from their list with a simple swipe gesture, which
-  also clears any related data from storage.
+The app uses an MVI (Model-View-Intent) architecture pattern by having the UI observe a single flow
+that represents the current state of the screen. This uni-directional data flow simplifies state
+management and makes the app more predictable and easier to test.
+
+* **Jetpack Compose**: For building the user interface.
+* **Kotlin**: The programming language used for the app.
+* **Coroutines**: For handling asynchronous operations and API calls.
+* **ViewModel**: For managing UI-related data in a lifecycle-conscious way.
+* **Navigation Component**: For managing navigation between different screens in the app.
+* **Hilt**: For dependency injection to manage the app's dependencies efficiently.
+* **Room**: For local data storage, if needed, to persist user preferences or stock lists.
+* **Retrofit**: For making network requests to the Polygon API.
+* **OkHttp**: For handling HTTP requests, responses, and caching.
+
+## Assumptions and Issues
+
+The requirements for the overview and list of stocks screens just mentioned "display a list of
+stocks" and "show a list of stocks", so I assumed that the list of stocks is the same as the
+overview of stocks. Also, the list is initialized with several values once during the first app
+launch. Afterward, the list is custom based on whatever stock the user selects in the add stock
+dialog.
+
+After hitting the Polygon API limit several times, I added a `CacheInterceptor` to the OkHttp
+client to cache responses for 10 minutes, regardless of server-side cache headers. This allows the
+app to function without hitting the API limit too quickly, especially during development and
+testing. The cache is stored in the app's internal storage, ensuring that it is not accessible to
+other apps or users.
 
 ## Requirements
+
+These are the requirements verbatim from the Coderbyte assessment:
 
 * Use third party libraries only if necessary.
 * Use the Polygon API to fetch stock market data.
