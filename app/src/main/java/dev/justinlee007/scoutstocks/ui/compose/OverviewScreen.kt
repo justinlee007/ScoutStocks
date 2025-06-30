@@ -93,6 +93,7 @@ fun OverviewScreen(
             }
             when (uiState) {
                 is OverviewUiState.Loading -> LoadingScreen()
+                is OverviewUiState.Empty -> EmptyScreen()
                 is OverviewUiState.Error -> ErrorScreen(
                     errorMessage = uiState.message,
                     onRefresh = { onRefresh() },
@@ -147,6 +148,19 @@ fun ErrorScreen(
                 Text("Retry")
             }
         }
+    }
+}
+
+@Composable
+fun EmptyScreen(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "No Stocks Added")
     }
 }
 

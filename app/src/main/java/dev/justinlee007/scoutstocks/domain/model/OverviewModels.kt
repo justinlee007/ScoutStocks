@@ -8,6 +8,8 @@ sealed class OverviewUiState {
 
     object Loading : OverviewUiState()
 
+    object Empty : OverviewUiState()
+
     data class Error(
         val message: String
     ) : OverviewUiState()

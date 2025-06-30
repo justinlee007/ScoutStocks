@@ -26,7 +26,6 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "ticker")
 data class LocalTicker(
-    @PrimaryKey val id: String,
-    val ticker: String,
+    @PrimaryKey val ticker: String,
     val name: String,
 )
