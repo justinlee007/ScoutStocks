@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.justinlee007.scoutstocks.data.remote.PolygonApiService
 import dev.justinlee007.scoutstocks.data.remote.interceptor.AuthInterceptor
+import dev.justinlee007.scoutstocks.data.remote.interceptor.CacheInterceptor
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
@@ -40,7 +41,8 @@ object NetworkModule {
     fun provideOkHttpClient(
         @ApplicationContext context: Context,
         loggingInterceptor: HttpLoggingInterceptor,
-        authInterceptor: AuthInterceptor
+        authInterceptor: AuthInterceptor,
+        cacheInterceptor: CacheInterceptor,
     ): OkHttpClient = OkHttpClient.Builder()
         .cache(
             Cache(
@@ -48,6 +50,7 @@ object NetworkModule {
                 maxSize = 50L * 1024L * 1024L // 50 MiB
             )
         )
+        .addNetworkInterceptor(cacheInterceptor)
         .addInterceptor(authInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()
