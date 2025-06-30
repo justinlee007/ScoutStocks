@@ -40,6 +40,7 @@ fun ScoutStocksNavHost(
             arguments = StockDetail.arguments,
         ) {
             StockDetailScreen(
+                ticker = it.arguments?.getString(StockDetail.tickerArg).orEmpty(),
                 onBack = {
                     navController.popBackStack()
                 }
