@@ -38,7 +38,7 @@ class StockRepository @Inject constructor(
         sort: String? = null,
         order: String? = null
     ): Flow<Result<TickerList>> {
-        delay(3000)
+        delay(2000)
         val response = apiService.getTickerList(
             market = market,
             active = active,

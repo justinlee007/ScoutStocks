@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -20,16 +21,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import dev.justinlee007.scoutstocks.domain.model.OverviewUiState
 import dev.justinlee007.scoutstocks.domain.model.StockItem
 import dev.justinlee007.scoutstocks.ui.viewmodel.OverviewViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Stocks Overview Screen
@@ -49,6 +58,7 @@ fun OverviewScreen(
     modifier: Modifier = Modifier,
     overviewViewModel: OverviewViewModel = hiltViewModel(),
 ) {
+    var isRefreshing by remember { mutableStateOf(false) }
     val uiState = overviewViewModel.uiState.collectAsStateWithLifecycle().value
     Scaffold(
         topBar = {
@@ -72,10 +82,25 @@ fun OverviewScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+            fun onRefresh() {
+                overviewViewModel.viewModelScope.launch {
+                    isRefreshing = true
+                    overviewViewModel.refreshUiState()
+                    isRefreshing = false
+                }
+            }
             when (uiState) {
                 is OverviewUiState.Loading -> LoadingScreen()
-                is OverviewUiState.Error -> ErrorScreen(errorMessage = uiState.message)
-                is OverviewUiState.Success -> SuccessScreen(stockItems = uiState.items)
+                is OverviewUiState.Error -> ErrorScreen(
+                    errorMessage = uiState.message,
+                    onRefresh = { onRefresh() },
+                )
+
+                is OverviewUiState.Success -> SuccessScreen(
+                    stockItems = uiState.items,
+                    isRefreshing = isRefreshing,
+                    onRefresh = { onRefresh() },
+                )
             }
         }
     }
@@ -103,6 +128,7 @@ fun LoadingScreen(
 @Composable
 fun ErrorScreen(
     errorMessage: String,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -115,36 +141,50 @@ fun ErrorScreen(
         ) {
             Text(text = errorMessage)
             Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = onRefresh) {
+                Text("Retry")
+            }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuccessScreen(
     stockItems: List<StockItem>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize()
+    val state = rememberPullToRefreshState()
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh,
+        modifier = modifier.fillMaxSize(),
+        state = state,
     ) {
-        items(
-            items = stockItems,
-            key = { it.ticker }
-        ) { stockItem ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stockItem.name,
-                    modifier = Modifier.weight(0.75f)
-                )
-                Text(
-                    text = stockItem.ticker,
-                    modifier = Modifier.weight(0.25f)
-                )
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(
+                items = stockItems,
+                key = { it.ticker }
+            ) { stockItem ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stockItem.name,
+                        modifier = Modifier.weight(0.75f)
+                    )
+                    Text(
+                        text = stockItem.ticker,
+                        modifier = Modifier.weight(0.25f)
+                    )
+                }
             }
         }
     }
@@ -159,7 +199,10 @@ fun PreviewLoadingScreen() {
 @Preview(showBackground = true, name = "Error State")
 @Composable
 fun PreviewErrorScreen() {
-    ErrorScreen(errorMessage = "Failed to load stocks.")
+    ErrorScreen(
+        errorMessage = "Failed to load stocks.",
+        onRefresh = { /* Handle refresh action */ },
+    )
 }
 
 @Preview(showBackground = true, name = "Success State")
@@ -170,6 +213,8 @@ fun PreviewSuccessScreen() {
             StockItem(name = "Apple Inc.", ticker = "AAPL"),
             StockItem(name = "Alphabet Inc.", ticker = "GOOGL"),
             StockItem(name = "Microsoft Corp.", ticker = "MSFT")
-        )
+        ),
+        isRefreshing = false,
+        onRefresh = { /* Handle refresh action */ },
     )
 }
