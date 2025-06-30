@@ -94,9 +94,9 @@ class RemoteRepository @Inject constructor(
      * @param ticker The ticker symbol of the asset (e.g., "AAPL").
      * @return A [TickerOverview] object, which typically contains a single [Ticker] in its results list.
      */
-    suspend fun getTickerOverview(ticker: String): Flow<Result<TickerOverview>> {
+    suspend fun getTickerOverview(ticker: String): Result<TickerOverview> {
         val response = apiService.getTickerOverview(ticker = ticker)
-        val result = if (response.isSuccessful) {
+        return if (response.isSuccessful) {
             val tickerOverview = response.body()
             if (tickerOverview != null) {
                 Result.success(tickerOverview)
@@ -106,6 +106,5 @@ class RemoteRepository @Inject constructor(
         } else {
             Result.failure(Exception("API request failed with code ${response.code()}"))
         }
-        return flowOf(result)
     }
 }
