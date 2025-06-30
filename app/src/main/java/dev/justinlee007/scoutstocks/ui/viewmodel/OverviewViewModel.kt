@@ -6,8 +6,8 @@ import dev.justinlee007.scoutstocks.data.repository.StockRepository
 import dev.justinlee007.scoutstocks.domain.model.OverviewUiState
 import dev.justinlee007.scoutstocks.domain.model.StockItem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -20,7 +20,7 @@ class OverviewViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading)
 
-    val uiState: StateFlow<OverviewUiState> = _uiState.asStateFlow()
+    val uiState: Flow<OverviewUiState> = _uiState.asStateFlow()
 
     suspend fun refreshUiState() {
         withContext(Dispatchers.IO) {

@@ -1,8 +1,5 @@
 package dev.justinlee007.scoutstocks.data.remote
 
-import dev.justinlee007.scoutstocks.data.model.Ticker
-import dev.justinlee007.scoutstocks.data.model.TickerList
-import dev.justinlee007.scoutstocks.data.model.TickerOverview
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

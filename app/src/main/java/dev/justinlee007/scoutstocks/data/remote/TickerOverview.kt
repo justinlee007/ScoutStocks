@@ -1,4 +1,4 @@
-package dev.justinlee007.scoutstocks.data.model
+package dev.justinlee007.scoutstocks.data.remote
 
 import kotlinx.serialization.SerialName
 
