@@ -1,4 +1,4 @@
-package dev.justinlee007.scoutstocks.data.source.network
+package dev.justinlee007.scoutstocks.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
