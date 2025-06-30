@@ -59,7 +59,9 @@ fun OverviewScreen(
     overviewViewModel: OverviewViewModel = hiltViewModel(),
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
-    val uiState = overviewViewModel.uiState.collectAsStateWithLifecycle().value
+    val uiState = overviewViewModel.uiState.collectAsStateWithLifecycle(
+        initialValue = OverviewUiState.Loading
+    ).value
     Scaffold(
         topBar = {
             TopAppBar(
