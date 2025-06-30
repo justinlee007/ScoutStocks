@@ -50,7 +50,10 @@ fun ScoutStocksNavHost(
             StockListScreen(
                 onBack = {
                     navController.popBackStack()
-                }
+                },
+                onClickAddStock = {
+                    navActions.navigateToAddStock()
+                },
             )
         }
         composable(route = AddStock.route) {

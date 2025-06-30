@@ -65,5 +65,9 @@ class ScoutStocksNavigationActions(private val navController: NavHostController)
     fun navigateToStockDetail(ticker: String) {
         navController.navigate(route = "${StockDetail.route}/$ticker")
     }
+
+    fun navigateToAddStock() {
+        navController.navigate(route = AddStock.route)
+    }
 }
 
