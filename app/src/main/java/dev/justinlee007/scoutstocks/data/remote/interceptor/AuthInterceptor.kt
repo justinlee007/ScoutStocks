@@ -2,8 +2,11 @@ package dev.justinlee007.scoutstocks.data.remote.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object AuthInterceptor : Interceptor {
+@Singleton
+class AuthInterceptor @Inject constructor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val newRequest = originalRequest.newBuilder()
@@ -12,5 +15,7 @@ object AuthInterceptor : Interceptor {
         return chain.proceed(newRequest)
     }
 
-    private const val POLYGON_API_KEY = "hkAashRfwpV8plrC6f4gb2tpP4U6BHce"
+    companion object {
+        private const val POLYGON_API_KEY = "hkAashRfwpV8plrC6f4gb2tpP4U6BHce"
+    }
 }

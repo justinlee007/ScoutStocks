@@ -7,7 +7,6 @@ import dagger.hilt.components.SingletonComponent
 import dev.justinlee007.scoutstocks.data.remote.PolygonApiService
 import dev.justinlee007.scoutstocks.data.remote.interceptor.AuthInterceptor
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,10 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    @Provides
-    @Singleton
-    fun provideAuthInterceptor(): Interceptor = AuthInterceptor
 
     @Provides
     @Singleton

@@ -3,6 +3,7 @@ package dev.justinlee007.scoutstocks.data.remote
 import dev.justinlee007.scoutstocks.data.model.Ticker
 import dev.justinlee007.scoutstocks.data.model.TickerList
 import dev.justinlee007.scoutstocks.data.model.TickerOverview
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -31,8 +32,8 @@ interface PolygonApiService {
         @Query("search") search: String? = null,
         @Query("limit") limit: Int? = null, // Using nullable to allow API default
         @Query("sort") sort: String? = null,
-        @Query("order") order: String? = null
-    ): TickerList
+        @Query("order") order: String? = null,
+    ): Response<TickerList>
 
     /**
      * Fetches detailed information for a single ticker.
@@ -44,6 +45,5 @@ interface PolygonApiService {
     @GET("v3/reference/tickers/{ticker}")
     suspend fun getTickerOverview(
         @Path("ticker") ticker: String,
-        @Query("apiKey") apiKey: String
-    ): TickerOverview
+    ): Response<TickerOverview>
 }
