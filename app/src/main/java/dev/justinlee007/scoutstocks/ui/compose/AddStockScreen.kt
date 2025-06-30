@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * Add Stock Screen
@@ -59,7 +60,7 @@ fun AddStockScreen(
     // Debounce query changes
     LaunchedEffect(Unit) {
         snapshotFlow { query }
-            .debounce(1000)
+            .debounce(timeoutMillis = 500)
             .distinctUntilChanged()
             .collectLatest { debouncedQuery ->
                 addStockViewModel.searchStock(query)
@@ -104,6 +105,7 @@ fun AddStockScreen(
                                         .fillMaxWidth()
                                         .clickable {
                                             addStockViewModel.viewModelScope.launch {
+                                                Timber.d("Adding stock: ${item.ticker}")
                                                 addStockViewModel.addStockItem(item)
                                             }
                                             onBack()

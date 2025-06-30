@@ -36,6 +36,7 @@ import dev.justinlee007.scoutstocks.domain.model.StockItem
 import dev.justinlee007.scoutstocks.domain.model.StockListUiState
 import dev.justinlee007.scoutstocks.ui.viewmodel.StockListViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * List of Stocks Screen
@@ -92,6 +93,7 @@ fun StockListScreen(
                     stockItems = uiState.items,
                     onDeleteStock = { stockItem ->
                         stockListViewModel.viewModelScope.launch {
+                            Timber.d("Deleting stock: ${stockItem.ticker}")
                             stockListViewModel.deleteStockItem(stockItem)
                         }
                     },
@@ -166,7 +168,7 @@ fun SuccessListScreen(
             val dismissState = rememberSwipeToDismissBoxState(
                 confirmValueChange = { newValue ->
                     if (newValue == SwipeToDismissBoxValue.StartToEnd) {
-                        onDeleteStock
+                        onDeleteStock(stockItem)
                         true
                     } else {
                         false

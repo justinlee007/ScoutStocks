@@ -41,6 +41,7 @@ import dev.justinlee007.scoutstocks.domain.model.OverviewUiState
 import dev.justinlee007.scoutstocks.domain.model.StockItem
 import dev.justinlee007.scoutstocks.ui.viewmodel.OverviewViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * Stocks Overview Screen
@@ -87,6 +88,7 @@ fun OverviewScreen(
                 .fillMaxSize()
         ) {
             fun onRefresh() {
+                Timber.d("Refreshing stock data")
                 overviewViewModel.viewModelScope.launch {
                     isRefreshing = true
                     overviewViewModel.refreshUiState()
