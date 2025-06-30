@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +28,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.justinlee007.scoutstocks.domain.model.StockItem
 import dev.justinlee007.scoutstocks.domain.model.StockListUiState
 import dev.justinlee007.scoutstocks.ui.viewmodel.StockListViewModel
-import kotlinx.coroutines.delay
 
 /**
  * List of Stocks Screen
@@ -85,16 +83,6 @@ fun StockListScreen(
                 is StockListUiState.Success -> SuccessListScreen(stockItems = uiState.items)
             }
         }
-    }
-    val example = StockItem(
-        name = "Apple Inc.",
-        ticker = "AAPL"
-    )
-    LaunchedEffect(key1 = "foo") {
-        delay(5000)
-        stockListViewModel.addStockItem(example)
-        delay(5000)
-        stockListViewModel.deleteStockItem(example)
     }
 }
 
