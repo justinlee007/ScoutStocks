@@ -1,9 +1,9 @@
 package dev.justinlee007.scoutstocks.data.repository
 
+import dev.justinlee007.scoutstocks.data.remote.PolygonApiService
 import dev.justinlee007.scoutstocks.data.remote.Ticker
 import dev.justinlee007.scoutstocks.data.remote.TickerList
 import dev.justinlee007.scoutstocks.data.remote.TickerOverview
-import dev.justinlee007.scoutstocks.data.remote.PolygonApiService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf

@@ -5,15 +5,16 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import dev.justinlee007.scoutstocks.ui.compose.AddStockScreen
 import dev.justinlee007.scoutstocks.ui.compose.OverviewScreen
 import dev.justinlee007.scoutstocks.ui.compose.StockDetailScreen
 import dev.justinlee007.scoutstocks.ui.compose.StockListScreen
 
 @Composable
-fun ScoutStockNavHost(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+fun ScoutStocksNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = navController,

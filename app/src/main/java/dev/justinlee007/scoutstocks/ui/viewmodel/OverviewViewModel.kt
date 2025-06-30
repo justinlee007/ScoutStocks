@@ -1,6 +1,7 @@
 package dev.justinlee007.scoutstocks.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.justinlee007.scoutstocks.data.repository.RemoteRepository
 import dev.justinlee007.scoutstocks.domain.model.OverviewUiState
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -17,6 +19,12 @@ import javax.inject.Inject
 class OverviewViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : ViewModel() {
+
+    init {
+        viewModelScope.launch {
+            refreshUiState()
+        }
+    }
 
     private val _uiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading)
 
