@@ -193,12 +193,20 @@ fun SuccessScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stockItem.name,
-                        modifier = Modifier.weight(0.75f)
+                        text = "${stockItem.name} (${stockItem.ticker})",
+                        modifier = Modifier.weight(0.4f)
                     )
                     Text(
-                        text = stockItem.ticker,
-                        modifier = Modifier.weight(0.25f)
+                        text = String.format("%.2f", stockItem.price),
+                        modifier = Modifier.weight(0.2f)
+                    )
+                    Text(
+                        text = String.format("%.2f", stockItem.change),
+                        modifier = Modifier.weight(0.2f)
+                    )
+                    Text(
+                        text = "${String.format("%.2f", stockItem.changePercent)}%",
+                        modifier = Modifier.weight(0.2f)
                     )
                 }
             }
