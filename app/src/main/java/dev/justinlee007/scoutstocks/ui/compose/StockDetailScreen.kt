@@ -12,9 +12,9 @@ import dev.justinlee007.scoutstocks.ui.theme.ScoutStocksTheme
  * and market cap, using basic graphical representations and standard UI elements.
  */
 @Composable
-fun StockDetailScreen(name: String, modifier: Modifier = Modifier) {
+fun StockDetailScreen(modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Stock Detail Screen",
         modifier = modifier
     )
 }
@@ -23,6 +23,6 @@ fun StockDetailScreen(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun StockDetailScreenPreview() {
     ScoutStocksTheme {
-        StockDetailScreen("Android")
+        StockDetailScreen()
     }
 }

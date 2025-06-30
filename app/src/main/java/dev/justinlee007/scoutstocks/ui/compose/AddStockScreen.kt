@@ -16,9 +16,9 @@ import dev.justinlee007.scoutstocks.ui.theme.ScoutStocksTheme
  * search query, ensuring efficient API use.
  */
 @Composable
-fun AddStockScreen(name: String, modifier: Modifier = Modifier) {
+fun AddStockScreen(modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Add Stocks Screen",
         modifier = modifier
     )
 }
@@ -27,6 +27,6 @@ fun AddStockScreen(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun AddStockScreenPreview() {
     ScoutStocksTheme {
-        AddStockScreen("Android")
+        AddStockScreen()
     }
 }
