@@ -1,17 +1,21 @@
 package dev.justinlee007.scoutstocks.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.justinlee007.scoutstocks.data.remote.PolygonApiService
 import dev.justinlee007.scoutstocks.data.remote.interceptor.AuthInterceptor
 import kotlinx.serialization.json.Json
+import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.io.File
 import javax.inject.Singleton
 
 @Module
@@ -34,10 +38,16 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
+        @ApplicationContext context: Context,
         loggingInterceptor: HttpLoggingInterceptor,
         authInterceptor: AuthInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
-        // .cache(Cache(directory = File("", "http_cache"), maxSize = 50L * 1024 * 1024))
+        .cache(
+            Cache(
+                directory = File(context.cacheDir, "http_cache"),
+                maxSize = 50L * 1024L * 1024L // 50 MiB
+            )
+        )
         .addInterceptor(authInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()
